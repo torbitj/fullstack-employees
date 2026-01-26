@@ -7,6 +7,11 @@ app.get('/', (req, res, next) => {
   res.send("Welcome to the Fullstack Employees API.")
 })
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.use('/employees', router);
 
 app.use((err, req, res, next) => {
