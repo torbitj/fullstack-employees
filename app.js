@@ -8,3 +8,8 @@ app.get('/', (req, res, next) => {
 })
 
 app.use('/employees', router);
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send("It's not you, it's me. Working to restore.")
+})
