@@ -43,15 +43,9 @@ export async function getEmployee(id) {
  * @returns undefined if employee with the given id does not exist
  */
 export async function updateEmployee({ id, name, birthday, salary }) {
-  const updateKeys = [];
-
-  if (name) updateKeys.push(`name = '${name}'`);
-  if (birthday) updateKeys.push(`birthday = ${birthday}`);
-  if (name) updateKeys.push(`salary = ${salary}`);
-
   const sql = `
     UPDATE employees
-    SET ${updateKeys.join(', ')}
+    SET name = '${name}', birthday = '${birthday}', salary = ${salary}
     WHERE employees.id = ${id}
     RETURNING *
   `;
@@ -67,5 +61,12 @@ export async function updateEmployee({ id, name, birthday, salary }) {
  * @returns undefined if employee with the given id does not exist
  */
 export async function deleteEmployee(id) {
-  // TODO
+  const sql = `
+    DELETE FROM employees
+    WHERE employees.id = ${id}
+    RETURNING *
+  `;
+  const { rows: [deletedEmployee] } = await db.query(sql);
+
+  return deletedEmployee;
 }
