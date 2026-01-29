@@ -43,7 +43,23 @@ export async function getEmployee(id) {
  * @returns undefined if employee with the given id does not exist
  */
 export async function updateEmployee({ id, name, birthday, salary }) {
-  // TODO
+  const updateKeys = [];
+
+  if (name) updateKeys.push(`name = '${name}'`);
+  if (birthday) updateKeys.push(`birthday = ${birthday}`);
+  if (name) updateKeys.push(`salary = ${salary}`);
+
+  const sql = `
+    UPDATE employees
+    SET ${updateKeys.join(', ')}
+    WHERE employees.id = ${id}
+    RETURNING *
+  `;
+
+  const { rows: [updatedEmployee] } = await db.query(sql);
+
+  return updatedEmployee;
+
 }
 
 /**
